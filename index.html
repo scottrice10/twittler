@@ -29,7 +29,34 @@
           lastTweetIndex = streams.home.length;
         }
 
-      });
+        //click method to show user's timeline
+        $(document.body).on('click', '.user', function(event){
+          event.stopPropagation();
+          event.preventDefault();
+          var $closestTweet = $(this).closest(".tweet");
+          var userhandle = $(this).text();
+          var username = userhandle.slice(1, userhandle.length);
+          var $timelineVisible = $closestTweet.find(".timeline:visible");
+          var $timeline = $closestTweet.find(".timeline");
+          
+          $timeline.toggle();
+
+          if($timelineVisible){
+            // first remove existing user-timeline elements
+            // then build new ones
+            $timeline.find(".user-timeline").remove();
+
+            var newIndex = streams.users[username].length - 1;
+            while(newIndex >= 0){
+              var userTweet = streams.users[username][newIndex];
+              var $userTimeline = $('<div class="user-timeline"></div>');
+              $userTimeline.text(userTweet.message + ' ' + createTimeStamp());
+              $userTimeline.appendTo($timeline);
+              $timeline.appendTo($closestTweet);
+              newIndex -= 1;
+            }
+          }
+        });
 
     </script>
   </body>
