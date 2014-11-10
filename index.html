@@ -12,13 +12,21 @@
         var $body = $('body');
         $body.html('');
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
+        // method to get most recent tweets
+        var lastTweetIndex = 0
+        var getRecentTweets = function(){
+          var index = streams.home.length - 1;
+          while(index >= lastTweetIndex){
+            //build tweet elements
+            var tweet = streams.home[index];
+            var $tweet = $('<div class="tweet"><a href="#" class="user">@' + tweet.user + '</a>: ' + tweet.message + ' ' + createTimeStamp() + '</div>');
+            var $timeline = $('<div class="timeline"></div>');
+            $tweet.appendTo($body);
+            $timeline.appendTo($tweet);
+            index -= 1;
+          }
+
+          lastTweetIndex = streams.home.length;
         }
 
       });
